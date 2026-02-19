@@ -19,7 +19,7 @@ source.include_exts = py,png,jpg,kv,atlas,json,appicon,webicon,manifest
 version = 1.0
 
 # (list) Application requirements
-requirements = python3, kivy==2.3.0, kivymd, jnius, android, cython
+requirements = python3, kivy==2.3.0, kivymd, pyjnius==1.6.1, android, cython
 
 # (list) Supported orientations
 orientation = portrait
