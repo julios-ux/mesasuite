@@ -1,6 +1,2 @@
-# (os.environ) Optional requirements
-# comma separated list of requirements
-requirements = python3,kivy,cython
-
-# Android exclude extensions
-android.exclude_exts = _lzma,_uuid,grp
+Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): 2026-02-19 17:16:41
+Current User's Login: julios-ux
