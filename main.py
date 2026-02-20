@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # 📘 SOFIA MOBILE RUNTIME - OMOE NATIVE HARDWARE EDITION (FULL MERGE + DYNAMIC APPS + SCAN FIX)
 # Arquitetura: Semântica + HAL Real + JNI + Active Desktop + Micro-Universo + Dynamic Loader
-# Novidades: Lançador de Apps Internos (.appicon), Varredura de Sistema, Multitarefa Híbrida, Gestos
+# Novidades: Lançador de Apps Internos (.appicon), Varredura de Sistema, Multitarefa Híbrida, Gestos, Wallpapers Públicos
 # Autor: Dono & Aurora
 # Status: FINALIZADO.
 
@@ -795,8 +795,9 @@ class WallpaperPicker(ModalView):
         scroll = ScrollView()
         self.grid = MDGridLayout(cols=3, adaptive_height=True, padding=dp(10), spacing=dp(10))
 
-        # Carrega imagens da pasta assets (Padrão)
-        self.load_images("assets")
+        # Puxa o caminho da pasta pública pelo App
+        app = MDApp.get_running_app()
+        self.load_images(app.WALLPAPERS_DIR)
 
         scroll.add_widget(self.grid)
         card.add_widget(scroll)
@@ -2363,6 +2364,7 @@ class SophiaMobileApp(MDApp):
     APPS_DIR = ""
     SYS_DIR = ""
     APPLETS_DIR = ""
+    WALLPAPERS_DIR = ""
 
     def build(self):
         # 🌟 CORREÇÃO: MODO IMERSIVO APENAS NO ANDROID
@@ -2407,11 +2409,21 @@ class SophiaMobileApp(MDApp):
         self.APPS_DIR = os.path.join(self.SOPHIA_ROOT, "Aplicativos")
         self.SYS_DIR = os.path.join(self.SOPHIA_ROOT, "Sistema")
         self.APPLETS_DIR = os.path.join(self.SYS_DIR, "Applets")
+        self.WALLPAPERS_DIR = os.path.join(self.SOPHIA_ROOT, "Wallpapers") # <-- NOVA PASTA
 
         # O Fiat Lux! Cria o universo se ele não existir
-        pastas_essenciais = [self.MESA_DIR, self.APPS_DIR, self.SYS_DIR, self.APPLETS_DIR]
+        pastas_essenciais = [self.MESA_DIR, self.APPS_DIR, self.SYS_DIR, self.APPLETS_DIR, self.WALLPAPERS_DIR]
         for pasta in pastas_essenciais:
             os.makedirs(pasta, exist_ok=True)
+            
+        # Copia o wallpaper padrão do modo trancado pro modo público na 1ª vez
+        default_wp_interno = "assets/wallpaper.jpg"
+        default_wp_publico = os.path.join(self.WALLPAPERS_DIR, "wallpaper.jpg")
+        if os.path.exists(default_wp_interno) and not os.path.exists(default_wp_publico):
+            try:
+                shutil.copy2(default_wp_interno, default_wp_publico)
+            except Exception as e:
+                print(f"Erro ao copiar wallpaper padrão: {e}")
 
         print(f"🌌 Universo Sophia iniciado em: {self.SOPHIA_ROOT}")
 
@@ -2424,6 +2436,11 @@ class SophiaMobileApp(MDApp):
             saved_wp = self.store.get('display').get('wallpaper')
             if saved_wp and os.path.exists(saved_wp):
                 self.current_wallpaper = saved_wp
+        else:
+            # Se não tem nada salvo, puxa da pasta pública!
+            public_wp = os.path.join(self.WALLPAPERS_DIR, "wallpaper.jpg")
+            if os.path.exists(public_wp):
+                self.current_wallpaper = public_wp
 
         self.current_path = self.get_mesa_path()
         self.current_folder_name = os.path.basename(self.current_path)
