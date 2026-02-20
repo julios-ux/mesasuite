@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # 📘 SOFIA MOBILE RUNTIME - OMOE NATIVE HARDWARE EDITION (FULL MERGE + DYNAMIC APPS + SCAN FIX)
 # Arquitetura: Semântica + HAL Real + JNI + Active Desktop + Micro-Universo + Dynamic Loader
-# Novidades: Lançador de Apps Internos (.appicon), Varredura de Sistema, Multitarefa Híbrida, Gestos, Wallpapers Públicos
+# Novidades: Lançador de Apps Internos (.appicon), Varredura de Sistema, Multitarefa Híbrida, Gestos, Wallpapers Públicos, Ícones Públicos
 # Autor: Dono & Aurora
 # Status: FINALIZADO.
 
@@ -2365,6 +2365,7 @@ class SophiaMobileApp(MDApp):
     SYS_DIR = ""
     APPLETS_DIR = ""
     WALLPAPERS_DIR = ""
+    ICONS_DIR = ""
 
     def build(self):
         # 🌟 CORREÇÃO: MODO IMERSIVO APENAS NO ANDROID
@@ -2396,23 +2397,25 @@ class SophiaMobileApp(MDApp):
 
     # --- UNIVERSO SOPHIA (FILE SYSTEM) ---
     def init_sophia_universe(self):
-        # Descobre a raiz real do aparelho (ou PC para testes)
         if platform == 'android':
             from android.storage import primary_external_storage_path
             base_dir = primary_external_storage_path()
         else:
-            base_dir = os.path.expanduser("~") # Fallback pra rodar no Linux/Windows
+            base_dir = os.path.expanduser("~") 
 
-        # Define a fronteira do nosso sistema parasita
         self.SOPHIA_ROOT = os.path.join(base_dir, "SophiaOS")
         self.MESA_DIR = os.path.join(self.SOPHIA_ROOT, "Mesa")
         self.APPS_DIR = os.path.join(self.SOPHIA_ROOT, "Aplicativos")
         self.SYS_DIR = os.path.join(self.SOPHIA_ROOT, "Sistema")
         self.APPLETS_DIR = os.path.join(self.SYS_DIR, "Applets")
-        self.WALLPAPERS_DIR = os.path.join(self.SOPHIA_ROOT, "Wallpapers") # <-- NOVA PASTA
+        self.WALLPAPERS_DIR = os.path.join(self.SOPHIA_ROOT, "Wallpapers")
+        
+        # --- A NOVA ROTA DOS ÍCONES ---
+        self.ICONS_DIR = os.path.join(self.SOPHIA_ROOT, "mobile_icons")
+        global ICONS_ROOT # Avisa que vamos alterar a variável global lá de cima
+        ICONS_ROOT = self.ICONS_DIR
 
-        # O Fiat Lux! Cria o universo se ele não existir
-        pastas_essenciais = [self.MESA_DIR, self.APPS_DIR, self.SYS_DIR, self.APPLETS_DIR, self.WALLPAPERS_DIR]
+        pastas_essenciais = [self.MESA_DIR, self.APPS_DIR, self.SYS_DIR, self.APPLETS_DIR, self.WALLPAPERS_DIR, self.ICONS_DIR]
         for pasta in pastas_essenciais:
             os.makedirs(pasta, exist_ok=True)
             
