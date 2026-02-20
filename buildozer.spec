@@ -21,6 +21,9 @@ version = 1.0
 # (list) Application requirements
 requirements = python3, kivy==master, kivymd, android
 
+# (str) python-for-android branch to use, defaults to master
+p4a.branch = master
+
 # (list) Supported orientations
 orientation = portrait
 
