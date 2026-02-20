@@ -13,6 +13,13 @@ jobs:
       - name: Puxar o código do repositório
         uses: actions/checkout@v4
 
+      - name: Baixar Ícones e Assets do Release
+        run: |
+          mkdir -p assets
+          wget "https://github.com/julios-ux/mesasuite/releases/download/icons/assets.zip" -O assets.zip
+          unzip -q assets.zip -d assets/
+          rm assets.zip
+
       - name: Configurar o Python
         uses: actions/setup-python@v5
         with:
