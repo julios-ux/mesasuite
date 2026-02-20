@@ -52,7 +52,7 @@ android.accept_sdk_license = True
 android.entrypoint = org.kivy.android.PythonActivity
 
 # (list) The Android archs to build for (Focado no Tablet)
-android.archs = arm64-v8a, armeabi-v7a
+android.archs = armeabi-v7a
 
 # (bool) enables Android auto backups feature (Android API >=23)
 android.allow_backup = True
