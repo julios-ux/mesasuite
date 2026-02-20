@@ -963,7 +963,6 @@ class PropertiesDialog(ModalView):
             self.state_box.add_widget(btn)
             self.state_btns.append((btn, s_key))
         self.state_scroll.add_widget(self.state_box)
-        card.add_widget(self.state_scroll)
         self.selected_state = current_state
         self.tags_field = MDTextField(text=", ".join(self.attrs.get("tags", [])), hint_text="Tags", mode="rectangle")
         card.add_widget(self.tags_field)
@@ -2871,7 +2870,6 @@ class SophiaMobileApp(MDApp):
                 Permission.WRITE_EXTERNAL_STORAGE,
                 Permission.CAMERA,
                 Permission.VIBRATE,
-                Permission.QUERY_ALL_PACKAGES,
                 Permission.WRITE_SETTINGS,
                 Permission.ACCESS_FINE_LOCATION,
                 Permission.ACCESS_COARSE_LOCATION,
